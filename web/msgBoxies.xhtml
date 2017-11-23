@@ -1,0 +1,86 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"> 
+    <h:head>
+        <title>Facelet Title</title>
+        
+    </h:head>
+    <h:body>
+    
+        <p:dialog id="ucreatora" header="Login" visible="#{userController.adminDLGShow()}" 
+                  widgetVar="dlg2" modal="true" height="888" width="95%"
+                  resizable="false" 
+                  >
+            
+            <h1>There is no anny user yet. </h1>
+            <h2>Admin-user Creation dialog </h2>
+            <h:form styleClass="loginFM">
+                <h2>
+                Admin login <br />
+                <h:inputText id="admLG"  styleClass="inputfield" value="#{userController.newUser.email}"  /><br />
+                Admin passw <br />
+                <h:inputSecret id="admPW"    styleClass="inputfield"  value="#{userController.newUser.passwd}" /><br />
+                <h:commandButton value="Create Admin" action="#{userController.createNewAdmin()}" />
+                </h2>
+            </h:form>
+        </p:dialog>
+        
+        
+        <p:dialog id="uLogin" header="#{lng.LoginDLGTitle}" visible="#{userController.loginDLGShow()}" 
+                  widgetVar="dlg2" modal="true" height="550" width="98%"
+                  resizable="false" closable="false" draggable="false" 
+                  >
+            
+            <h:form  styleClass="loginFM">
+                
+                
+                <div style=" text-align:  center">
+                    
+                </div>
+                <table width="80%" align="center" style=" padding: 10px;">
+                    <tr valign="middle">
+                        <td  style="text-align: center; width: 110px; ">
+                            <a href="http://www.keldysh.ru/" target="_blank">
+                            <p:graphicImage library="images" name="LogoIPM.jpg" width="100" />
+                            </a>
+                        </td>
+                        <td>
+                            <div style=" text-align: center">
+                                <p:outputLabel style=" font-size: 30px; color: #006699; font-weight: bolder;" value="#{lng.TitleName}" />
+                                <br />
+                                <p:outputLabel style=" font-size: 30px; color: #006699; font-weight: bolder;"  value="#{lng.TitleName0}" />
+                                
+                            </div>
+                            
+                            <div style=" text-align: center; padding-top: 30px;">
+                                <p:outputLabel style="  font-size: 17px; color: #006699;"  value="#{lng.TitleName1}" />
+                            </div>
+                        </td>
+                        <td style="text-align: center; width: 110px; "> 
+                            <a href="http://astronomer.ru/" target="_blank">
+                        <p:graphicImage library="images" name="ISON_logo_best_edition.jpg" width="100" />
+                            </a>
+                        </td>
+                    </tr>
+                </table>     
+            
+                <h2>
+                #{lng.Login} <br />
+                <h:inputText id="LG" styleClass="inputfield" value="#{userController.testLogin}"  validatorMessage="#{lng.AnEmailAddress}" >
+                    <f:validateRegex pattern="[\w\.-]*[a-zA-Z0-9_]@[\w\.-]*[a-zA-Z0-9]\.[a-zA-Z][a-zA-Z\.]*[a-zA-Z]" /> 
+                </h:inputText><br />
+                <p:message for="LG" /> <br />
+                #{lng.Password} <br />
+                <h:inputSecret id="PWS" value="#{userController.testPasswd}" /><br />
+                <h:commandButton  value="#{lng.Join}" actionListener="#{userController.currantSessionUserCreator}" />
+                </h2>
+            </h:form>
+        </p:dialog>
+        
+ 
+    </h:body>
+</html>
+

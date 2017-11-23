@@ -1,0 +1,49 @@
+body {
+    background-color: #777770;
+    font-size: 12px;
+    font-family: Verdana, "Verdana CE",  Arial, "Arial CE", "Lucida Grande CE", lucida, "Helvetica CE", sans-serif;
+    color: #000000;  
+    margin: 0px;
+}
+
+h1 {
+    border-bottom: 1px solid #AFAFAF; 
+    font-size:  18px;
+    font-weight: bold;
+    margin: 10px;
+    padding: 20px;
+    color:  darkgreen;
+}
+button span{
+    padding:0px;
+    font-size: 12px;
+}
+h2 input,h2 button{
+    padding:0px;
+    font-size: 12px;
+    border-bottom: 2px;
+    border-color: #c2dfef;
+}
+h2 input:hover,h2 button:hover{
+    border-color: #045491;
+    background: #ffffff3;
+}
+a:link, a:visited {
+  color: #045491;
+  font-weight : bold;
+  text-decoration: none;
+}
+
+a:link:hover, a:visited:hover  {
+  color: #045491;
+  font-weight : bold;
+  text-decoration : underline;
+}
+
+#successMSG{
+    color: darkgreen;
+}
+#errorMSG{
+    background: #ffff00;
+    color: #ff0000;
+}

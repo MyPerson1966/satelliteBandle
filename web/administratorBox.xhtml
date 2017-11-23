@@ -1,0 +1,87 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:composite="http://xmlns.jcp.org/jsf/composite/composite"
+      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
+    <h:head>
+        <title>Facelet Title</title>
+    </h:head>
+    <h:body>
+        
+        <c:if test="#{!userController.loginDLGShow()}" >        <h2> All Users
+        
+                <h:outputLabel id="pw" />
+                
+                
+                <c:if test="#{userController.selectedUser.id>0  }" >
+                <!--<p:commandButton value="Edit User #{userController.selectedUser.email} " type="button"  onclick="PF('newdlg').show();"   />-->
+                <p:commandButton value="Remove User #{userController.selectedUser.email} " type="button" onclick="PF('removedlg').show();"     />
+            </c:if>
+        </h2>
+        <h:form styleClass="dlgFM" >   
+            <p:dataTable id="userTable" var="user" value="#{userController.userList}"
+                     paginator="true"  rows="10" widgetVar="usersTable"
+                     resizableColumns="true" paginatorAlwaysVisible="false"
+                     >
+                <f:facet name="header">
+                    <p:outputPanel styleClass="tableColHead">
+                    <h:outputText value="Search all fields:" />
+                    <p:inputText id="globalFilter" onkeyup="PF('usersTable').filter()" style="width:250px" placeholder="Enter keyword"/>
+                </p:outputPanel>
+            </f:facet>
+            
+            <p:column headerText="Id" filterBy="#{user.id}" >
+                <h:outputLabel value="#{user.id} &nbsp;" /> 
+                <h:commandButton value="Select record  "  action="#{userController.setSelectedID(user.id) }"  />
+            </p:column>
+            
+            <p:column headerText="Email"  filterBy="#{user.email}" >
+                <h:outputText value="#{user.email}" />
+            </p:column>
+            
+            <p:column headerText="Password"  filterBy="#{user.passwd}" >
+                    <h:outputText value="#{user.passwd}" />
+                </p:column>
+ 
+            <p:column headerText="Type"  filterBy="#{user.userType}" >
+                    <h:outputText value="#{user.userType}" />
+                </p:column>
+            
+            <p:column headerText="Enabled"  filterBy="#{user.enabled}" >
+                    <h:outputText value="#{user.enabled}" />
+                </p:column>
+            
+                <p:column headerText="Activated at">
+                    <h:outputText value="#{user.moment}" >
+                        <f:convertDateTime pattern="dd.MM.yyyy" />
+                    </h:outputText>
+                </p:column>
+            </p:dataTable>
+        </h:form>
+        
+                
+        <p:dialog modal="true" header="User Dialog" widgetVar="removedlg" height="150" 
+                  width="333" resizable="false">
+            <h:form styleClass="warningFM">
+                <strong >
+                    The user #{userController.selectedUser.email} will be removed.
+                    Are you sure to continue?
+                </strong> 
+                <div style=" padding-top: 20px;">
+                    <h:commandButton value="No" type="button" onclick="PF('removedlg').hide();"  style=" float: left"     styleClass="yesBTN"  />
+                    <h:commandButton action="#{userController.removeSelectedUser()}" value="Yes" style=" float: right" styleClass="noBTN" />
+                </div>
+                
+            </h:form>    
+            
+        
+        </p:dialog>
+ 
+        </c:if>
+    </h:body>
+</html>
+

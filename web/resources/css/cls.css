@@ -1,0 +1,129 @@
+.leftButtonMenu{
+    background: #333330;
+    color: #fffff0;
+    cursor: pointer;
+}
+.formsBox{
+    padding: 10px;
+    background: #ddddda;
+}
+.firstrec{
+    background: #fffff0;
+}
+.secondrec{
+    background: #ffffff3;
+}
+.label{
+    text-decoration: underline;
+    font-weight: bold;
+}
+
+.center_content {
+    position: relative;
+    background-color: #dddddd;
+    padding: 5px;
+}
+
+.main_content {
+    border-color: #036fab;
+    border-radius: 11px;
+    background-color: #ddddd0;
+    padding: 20px;
+    margin: 5px;
+   
+}
+
+.right_content {
+    background-color: #dddddd;
+    padding: 5px;
+    margin: 0px 170px 0px 170px;
+}
+
+.fuploader{
+    margin: 5px;
+    border-color: #c2dfef;
+    border-radius: 11px;
+    height: 35px;
+}
+.forms{
+    background: #dddddf;
+    color: #777770;
+    margin: 5px;
+    border-color: #c2dfef;
+    border-radius: 10px;
+}
+.pres{
+    font-size: 10px;
+    font-weight: bold;
+    background: #ddddd0;
+    color: #555550;
+    margin: 25px;
+    padding: 10px;
+    border-color: #c2dfef;
+    border-radius: 11px;
+    overflow: auto;
+    height: 150px;
+    width: 90%;
+}
+.pres1{
+    font-size: 10px;
+    font-weight: bold;
+    background: #ddddd0;
+    color: #555550;
+    margin: 25px;
+    padding: 10px;
+    border-color: #c2dfef;
+    border-radius: 11px;
+    overflow: auto;
+    height: 150px;
+    
+}
+.panels{
+    padding: 2px;
+    margin: 1px;
+    background: #fffff0;
+}
+.loginFM{
+    background: #fffff0;
+    height: 70%;
+    padding: 40px;
+    margin: -2px;
+    border-color: #ddddd0;
+    border-width: 2px;
+    border-style:  solid;
+    border-radius: 14px;
+}
+.dlgFM{
+    background: #fffff5;
+    padding: 5px;
+    margin: 0px;
+    border-color: #ddddd0;
+    border-width: 2px;
+    border-style:  solid;
+    border-radius: 10px;
+}
+.loginFM h2{
+    text-align:  center;
+    padding: 80px;
+}
+.warningFM{
+    font-size: 17px;
+    padding: 15px;
+}
+.warningFM strong{
+    color: crimson;
+    font-weight: 200;
+}
+.yesBTN{
+    color: darkgreen;
+    font-size: 10px;
+}
+.noBTN{
+    color: darkred;
+    font-size: 10px;
+}
+.tableColHead{
+    padding: 2px;
+    color: #ddddd0;
+    background: #aaaaa0;
+}

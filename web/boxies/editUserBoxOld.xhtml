@@ -1,0 +1,42 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+    <h:head>
+        <title>Facelet Title</title>
+    </h:head>
+    <h:body>
+        
+        
+        <div style=" background: #ddddd0; display: #{userController.displayEditBox}">
+        <h1>Edit User </h1>
+        <h:form id="EFMU" styleClass="dlgFM">
+            <h3>Email <h:inputText id="ENLG" value="#{userController.selectedUser.email}"  required="true"   validatorMessage="An email Address expected" >
+                
+                    <f:validateRegex
+                    pattern="^[_A-Za-z0-9-\+]+(\.[_A-Za-z0-9-]+)*@[A-Za-z0-9-]+(\.[A-Za-z0-9]+)*(\.[A-Za-z]{2,})$"  />
+                    <f:ajax event="blur" render="NLGMSG" />
+                 
+                </h:inputText></h3><br />
+                <p:message for="ENLG" id="ENLGMSG" />
+            <h3>
+                Password <h:inputText id="Epw" value="#{userController.selectedUser.passwd}"  required="true"/>
+                <h:commandButton value="Another password" >
+                    <p:ajax event="click" update="Epw" listener="#{userController.generatePasswords()}" />
+                </h:commandButton>
+            </h3>
+            <h3>User Type 
+                <p:spinner value="#{userController.selectedUser.userType}"   max="3" min="-1" size="3"/>
+                Enabled 
+                <h:selectBooleanCheckbox value="#{userController.selectedUser.enabled}" />
+            </h3>
+            <h2 style=" text-align: center">
+                <h:commandButton value="Submit" action="#{userController.remakeUser()}"     />
+            </h2>
+        </h:form>
+        </div>
+    </h:body>
+</html>
+

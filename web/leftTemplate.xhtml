@@ -1,0 +1,73 @@
+<?xml version='1.0' encoding='UTF-8' ?> 
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core"
+      xmlns:p="http://primefaces.org/ui">
+
+    <h:head>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+        <h:outputStylesheet name="default.css" library="css"/>
+        <h:outputStylesheet name="cssLayout.css" library="css"/>
+        <h:outputStylesheet name="uicss.css" library="css"/>
+        <h:outputStylesheet name="cls.css" library="css"/>
+        <h:outputScript name="base.js" library="scripts" />
+        <title> //*******// </title>
+    </h:head>
+
+    <h:body>
+        
+        <c:if test="#{lang.language=='ru'}">
+            <f:loadBundle var="lng" basename="locales.ru" />
+        </c:if>
+
+        <c:if test="#{lang.language=='en'}">
+            <f:loadBundle var="lng" basename="locales.en" />
+        </c:if>
+        
+        <c:if test="#{userController.currantSessionUser != null}">
+            <div style=" background: #fffff0; padding-bottom: -5px; height: 115px; box-shadow: 0 0 10px rgba(0,102,153,0.5);">
+            <div style="float: left; padding-top: 30px;">
+                <a href="http://www.keldysh.ru/" target="_blank">
+                    <p:graphicImage library="images" name="LogoIPM.jpg" width="100" />
+                </a>
+            </div>
+            <div style="float: right;">
+                <a href="http://astronomer.ru/" target="_blank">
+                    <p:graphicImage library="images" name="ISON_logo_best_edition.jpg" width="100" />
+                </a>
+            </div>
+                
+                <div style=" text-align: center; padding-top: 40px;">
+                    <p:outputLabel style=" font-size: 22px; color: #006699; font-weight: bolder;" value="#{lng.TitleName}" />
+                    <br />
+                    <p:outputLabel style=" font-size: 22px; color: #006699; font-weight: bolder;"  value="#{lng.TitleName0}" />
+                </div>
+            </div>
+        </c:if>
+        <table width="100%">
+                    <c:if test="#{userController.currantSessionUser != null}"> 
+            <tr valign="top">
+                <td id="left"> 
+                    <ui:insert name="left">++</ui:insert></td>
+                <td id="content" class="main_content" width="80%">
+                    <ui:insert name="content">Content</ui:insert>
+                </td>
+                <td id="right"> 
+                        <ui:include src="rightMenu.xhtml" />
+                </td>
+            </tr>
+                      </c:if>  
+            <tr>
+                <td colspan="3">
+                    <ui:include src="msgBoxies.xhtml" />
+                </td>
+            </tr>
+        </table>
+        
+
+    </h:body>
+
+</html>

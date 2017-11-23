@@ -1,0 +1,49 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+    <h:head>
+        <title>Facelet Title</title>
+    </h:head>
+    <h:body>
+        
+        <h:form id="fileForm">
+            <p:dataGrid id="fileGrid"
+            value="#{fileViewController.fmList }" var="fl" columns="3" rows="30" layout="grid"
+        paginator="true" 
+        rowsPerPageTemplate="6,12,16"
+                    >
+            <f:facet name="header">
+                total files #{fileViewController.fmList.size()}
+            </f:facet>
+         <p:panel header="#{fl.fileName}"  style="text-align:center">
+            <h:panelGrid columns="1" style="width:100%"> 
+                <h:outputText value="Uploaded at #{fileViewController.getUplMoment(fl)}" /> 
+                
+                <p:commandLink value="View" >
+                    <p:ajax event="click" listener="#{fileViewController.selectFile(fl)}" update="fileForm:fileViewDLG" oncomplete="PF('fileViewDLG').show();"   />
+                
+                </p:commandLink>
+                <p:commandButton value="Download" ajax="false" action="#{fileViewController.recDownload( fl  )}" />    
+                
+            </h:panelGrid>
+        </p:panel>
+            
+        </p:dataGrid>
+            
+        
+            <p:dialog id="fileViewDLG" widgetVar="fileViewDLG" modal="true" closeOnEscape="true" header="#{fileViewController.fmCurr.fileName}"
+                      width="500" height="450">
+                <p:ajax event="close" listener="#{fileViewController.deSelect()}"  />
+                        
+                <pre style="height: 400px; overflow: scroll">
+                    <p:outputLabel value="#{fileViewController.fmCurr.content}" />
+                </pre>
+            </p:dialog>    
+            <p:commandButton value="CreateArhive" action="#{fileViewController.createArchiveREC()}" /> 
+    </h:form>
+    </h:body>
+</html>
+
