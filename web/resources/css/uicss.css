@@ -38,6 +38,16 @@
 .ui-datagrid .ui-widget .filebox{
     background: #c2dfef;
 }
+/*
+.ui-widget{
+    background: #fffffe  !important; 
+}*/
+.ui-widget-content{
+    background: #77bbcc !important; 
+}
+.ui-datatable-header{
+    background: #fffff0  !important; 
+}
 
 .ui-button{
     background: #cbffff !important;

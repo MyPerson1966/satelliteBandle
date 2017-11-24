@@ -5,7 +5,6 @@
  */
 package pns.entity.controllers;
 
-import com.sun.org.apache.bcel.internal.generic.FMUL;
 import java.io.File;
 import java.io.IOException;
 import java.text.DateFormat;
@@ -38,8 +37,6 @@ import pns.fileUtils.FileActor;
 import pns.fileUtils.FileSpecActor;
 import pns.kiam.entities.satellites.FileMeasured;
 import pns.kiam.entities.telescopes.Telescope;
-//import pns.kiam.sweb.controllers.app.XXParserSWEB;
-//import pns.kiam.sweb.controllers.satelites.FileMeasuredController;
 
 /**
  *
