@@ -1,8 +1,8 @@
 body {
-    background-color: #777770;
+    background-color: #ceeafa;
     font-size: 12px;
     font-family: Verdana, "Verdana CE",  Arial, "Arial CE", "Lucida Grande CE", lucida, "Helvetica CE", sans-serif;
-    color: #000000;  
+    color: #005454;  
     margin: 0px;
 }
 
@@ -12,7 +12,7 @@ h1 {
     font-weight: bold;
     margin: 10px;
     padding: 20px;
-    color:  darkgreen;
+    color:  #004545;
 }
 button span{
     padding:0px;
@@ -21,7 +21,7 @@ button span{
 h2 input,h2 button{
     padding:0px;
     font-size: 12px;
-    border-bottom: 2px;
+    border-bottom: 3px;
     border-color: #c2dfef;
 }
 h2 input:hover,h2 button:hover{
@@ -35,15 +35,19 @@ a:link, a:visited {
 }
 
 a:link:hover, a:visited:hover  {
-  color: #045491;
+  color: #003535;
   font-weight : bold;
   text-decoration : underline;
 }
 
 #successMSG{
+    font-weight: bolder;
     color: darkgreen;
+  text-decoration : underline;
 }
 #errorMSG{
+    font-weight: bolder;
     background: #ffff00;
     color: #ff0000;
+  text-decoration : underline;
 }

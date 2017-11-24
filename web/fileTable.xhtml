@@ -10,27 +10,36 @@
     <h:body>
         
         <h:form id="fileForm">
-            <p:dataGrid id="fileGrid"
-            value="#{fileViewController.fmList }" var="fl" columns="3" rows="30" layout="grid"
-        paginator="true" 
-        rowsPerPageTemplate="6,12,16"
+                <h1>File Archive total files #{fileViewController.fmList.size()}</h1>
+            <p:dataGrid id="fileGrid" widgetVar="fileGrid"
+                         paginatorAlwaysVisible="false"
+                         value="#{fileViewController.fmList }"  
+                         var="fl"  paginator="true" 
+                            rowsPerPageTemplate="6,12,18,24,30,36,42" rows="6"
+        
                     >
-            <f:facet name="header">
-                total files #{fileViewController.fmList.size()}
+            <f:facet name="header" >
+                    <p:outputPanel styleClass="tableColHead">
+                    <h:outputText value="Search all fields:" />
+                    <p:inputText id="globalFilter"  style="width:250px" placeholder="Enter keyword" value="#{fileViewController.filterValue}">
+                        <p:ajax event="keyup" update="@form" listener="#{fileViewController.filterOutput()}" />
+                    </p:inputText>
+                </p:outputPanel>
             </f:facet>
-         <p:panel header="#{fl.fileName}"  style="text-align:center">
-            <h:panelGrid columns="1" style="width:100%"> 
-                <h:outputText value="Uploaded at #{fileViewController.getUplMoment(fl)}" /> 
-                
+                <p:panel header="#{fl.fileName}">
+                <h:outputText value="Uploaded at #{fileViewController.uploadMomentUTC(fl)}" /> 
+                        
+                <h:panelGrid columns="2" style="width:100%"> 
                 <p:commandLink value="View" >
                     <p:ajax event="click" listener="#{fileViewController.selectFile(fl)}" update="fileForm:fileViewDLG" oncomplete="PF('fileViewDLG').show();"   />
-                
                 </p:commandLink>
                 <p:commandButton value="Download" ajax="false" action="#{fileViewController.recDownload( fl  )}" />    
+                </h:panelGrid>
+                </p:panel>
                 
-            </h:panelGrid>
-        </p:panel>
-            
+ 
+                
+                
         </p:dataGrid>
             
         
@@ -41,8 +50,11 @@
                 <pre style="height: 400px; overflow: scroll">
                     <p:outputLabel value="#{fileViewController.fmCurr.content}" />
                 </pre>
-            </p:dialog>    
-            <p:commandButton value="CreateArhive" action="#{fileViewController.createArchiveREC()}" /> 
+            </p:dialog>
+            <div style=" text-align:  right; padding: 5px;">
+                <p:commandButton value="CreateArhive" action="#{fileViewController.createArchiveREC()}" /> 
+            </div>
+            
     </h:form>
     </h:body>
 </html>

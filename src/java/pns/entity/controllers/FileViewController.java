@@ -5,6 +5,7 @@
  */
 package pns.entity.controllers;
 
+import com.sun.org.apache.bcel.internal.generic.FMUL;
 import java.io.File;
 import java.io.IOException;
 import java.text.DateFormat;
@@ -54,6 +55,7 @@ public class FileViewController extends AbstractEntityController {
     private CriteriaQuery<FileMeasured> cq;
 
     private String tmpName = "";
+    private String filterValue = "";
 
     protected EntityManagerFactory emfA = Persistence.createEntityManagerFactory("satelliteBandlePU");
     //@PersistenceContext
@@ -119,6 +121,14 @@ public class FileViewController extends AbstractEntityController {
         this.fmCurr = null;
     }
 
+    public String getFilterValue() {
+        return filterValue;
+    }
+
+    public void setFilterValue(String filterValue) {
+        this.filterValue = filterValue;
+    }
+
     public void recDownload(FileMeasured fm) {
         selectFile(fm);
         File f = new File(tmpName);
@@ -128,7 +138,7 @@ public class FileViewController extends AbstractEntityController {
         } catch (IOException ex) {
             Logger.getLogger(FileViewController.class.getName()).log(Level.SEVERE, null, ex);
         }
-        // f.delete();
+        f.delete();
     }
 
     private void genFileFromRec() {
@@ -147,11 +157,33 @@ public class FileViewController extends AbstractEntityController {
         //xxparser.getFileMeasuredController().readArchiveFileDir();
     }
 
-    public String getUplMoment(FileMeasured fm) {
+    public String uploadMomentUTC(FileMeasured fm) {
         DateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS");
         formatter.setTimeZone(TimeZone.getDefault().getTimeZone("UTC"));
         Date d = new Date(fm.getUploadedMoment());
         return formatter.format(d);
     }
 
+    public void filterOutput() {
+        if (filterValue.length() == 0 || filterValue == null) {
+            return;
+        }
+
+        List<FileMeasured> result = new ArrayList<>();
+        for (FileMeasured line : fmList) {
+            if (line.getFileName().trim().contains(filterValue.trim() + "")) {
+                result.add(line);
+            }
+            if ((line.getDate() + "").trim().contains(filterValue.trim() + "")) {
+                result.add(line);
+            }
+            if ((line.getYear() + "").trim().contains(filterValue.trim() + "")) {
+                result.add(line);
+            }
+            if ((line.getContent() + "").trim().contains(filterValue.trim() + "")) {
+                result.add(line);
+            }
+        }
+        fmList = result;
+    }
 }

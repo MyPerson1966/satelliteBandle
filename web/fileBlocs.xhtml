@@ -19,7 +19,7 @@
                  
                 <h:form id="filelist"> 
                 <h1>
-                    <h:outputLabel  value="#{directoryController.currDirectory}" />
+                    <h:outputLabel  value="#{directoryController.shortCurrDir}" />
                 </h1>
                     <p:dataGrid value="#{directoryController.fileList}" var="afile" columns="3" lazy="true" 
                                 rowIndexVar="rowIndex" paginatorAlwaysVisible="true"  paginator="true"

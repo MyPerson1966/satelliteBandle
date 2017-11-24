@@ -1,4 +1,4 @@
-
+/* #065c8d */
 #top {
     position: relative;
     background-color: #036fab;
@@ -16,7 +16,7 @@
 
 #left {
     float: left;
-    background-color: #333330;
+    background-color: #065c8d;
     padding: 5px;
     width: 250px;
     height: 100%;
@@ -24,7 +24,7 @@
 
 #right {
     float: right;
-    background-color: #333330;
+    background-color: #065c8d;
     padding: 5px;
     width: 250px;
 }

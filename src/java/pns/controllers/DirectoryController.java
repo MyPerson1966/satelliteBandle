@@ -55,6 +55,17 @@ public class DirectoryController implements Serializable {
         dirGoingGenerator();
     }
 
+    public String getShortCurrDir() {
+        String res = currDirectory.replace('\\', '/');
+        String[] resParts = res.split("/");
+        res = resParts[resParts.length - 2] + "=>" + resParts[resParts.length - 1];
+        if (resParts[resParts.length - 2].trim().equals("satdata".trim())) {
+            res = resParts[resParts.length - 1];
+        }
+        return res;
+
+    }
+
     public String getCurrDirectory() {
         return currDirectory;
     }

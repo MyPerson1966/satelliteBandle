@@ -13,13 +13,15 @@
  margin: 1px;
  border-radius: 5px;
 }
-.ui-panel-content .ui-widget-content{
+ 
+.ui-panel-content {
  margin: 1px;
+ background: #c2dfef !important;
  border-radius: 5px;
 }
-
 .ui-panel-title{
     font-size: 11px;
+ background: #ceeafa !important;
     font-weight: bolder;
 }
 .filebox{
@@ -29,11 +31,69 @@
     background: #ccccc2;
 }
 .ui-datagrid-content .ui-widget-content{
-    background: #ccccc0;
+    background: #ceeafa ;
     margin: 0px;
     padding: 0px;
 }
 .ui-datagrid .ui-widget .filebox{
     background: #c2dfef;
+}
+
+.ui-button{
+    background: #cbffff !important;
+}
+.ui-button:hover{
+    background: #00dfdf !important;
+    
+}
+
+.ui-dialog--content Dialog{
+    background: #fffff0 !important; 
+    padding: 10px!important; 
+    color: #009494!important; 
+    
+}
+.ui-dialog-titlebar{
+    background: #ccfefe !important; 
+}
+.ui-dialog-title-dialog{
+    padding: 15px!important; 
+    color: #00a4a4!important; 
+}
+
+
+.ui-button,  .ui-commandlink {
+    padding-left: 2px   !important;
+    padding-right:2px   !important;
+    background: #f3f2f3 !important;
+    color: #009393 !important; 
+}
+.ui-button:hover {
+    box-shadow: 0 5px 5px rgba(0,110,110,0.9)  !important;
+    color: #004343 !important;
+    background-image: -webkit-gradient(
+	    linear, left top, left bottom, from(rgba(100,200,200,0.7)),
+	    to(rgba(100,100,100,0.2))
+	) !important;
+}
+.ui-commandlink:hover {
+    box-shadow: 5px 5px 5px rgba(0,110,110,0.5)  !important;
+    color: #004343 !important;
+    background-image: -webkit-gradient(
+	    linear, left top, left bottom, from(rgba(100,200,200,0.7)),
+	    to(rgba(120,120,120,0.1))
+	) !important;
+    margin: 5px;
+}
+.ui-paginator-page, .ui-paginator-first, .ui-paginator-prev, .ui-paginator-next, .ui-paginator-last{
+    padding-left: 15px   !important;
+    padding-right:15px   !important;
+    background: #cce5e5 !important;
+    color: #009393 !important;
+    border: none;
+}
+.ui-paginator-page:hover, .ui-paginator-first:hover, .ui-paginator-prev:hover, .ui-paginator-next:hover, .ui-paginator-last:hover{
+    box-shadow: 0 0px 5px rgba(0,110,110,0.7)  !important;
+    color: #004343 !important;
 }
 
