@@ -9,10 +9,14 @@ import java.io.File;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
+import java.util.GregorianCalendar;
 import java.util.List;
 import javax.ejb.Schedule;
 import javax.ejb.Stateless;
+import javax.inject.Inject;
+import pns.entity.controllers.FileViewController;
 import pns.fileUtils.DirectoryDeepGo;
 import pns.fileUtils.FileActor;
 import pns.fileUtils.FileSpecActor;
@@ -34,35 +38,47 @@ public class RemoverDuplicatesTimeTable {
 
     ;
 
-//    @Schedule(dayOfWeek = "*", month = "*", hour = "*", dayOfMonth = "*", year = "*", minute = "*/20", second = "0", persistent = true)
+    @Inject
+    private FileViewController fvc;
+
+//    @Schedule(dayOfWeek = "*", month = "*", hour = "*", dayOfMonth = "*", year = "*", minute = "*", second = "*/14", persistent = true)
+//    public void myTimer() {
+//        System.out.println(this.getClass().getCanonicalName() + "   Timer event: " + new Date());
+//        //fvc.createArchiveREC();
+//    }
+    @Schedule(dayOfWeek = "*", month = "*", hour = "*", dayOfMonth = "*", year = "*", minute = "*", second = "0", persistent = true)
     /**
      * every 20 minutes we are investigate here the existence of possible
      * doublicate files and remove them. The time deep is 2 days
      */
     public void removeDupleFiles() {
-//        lastFL.clear();
-//        dupl = new ArrayList<>();
-//        long d = System.currentTimeMillis();
-//        long d1 = d - maxFileAge;
-//        System.out.println(" ----->> Now: " + new Date() + "   " + maxFileAge + " milisec ago " + new Date(d1));
+        lastFL.clear();
+        dupl = new ArrayList<>();
+        long d = System.currentTimeMillis();
+        long d1 = d - maxFileAge;
+        System.out.println(" ----->> Now: " + new Date() + "   " + maxFileAge + " milisec ago " + new Date(d1));
 
-//        System.out.println();
-//        List<File> fl = ddg.getFileList();
-////        System.out.println("  fl.size " + fl.size());
-//        for (int k = 0; k < fl.size(); k++) {
-//            if (fl.get(k).lastModified() > d1) {
-//                lastFL.add(fl.get(k));
-//                //System.out.println(k + "  " + fl.get(k).getAbsolutePath() + "  " + fl.get(k).lastModified());
-//            }
-//        }
+        System.out.println();
+        List<File> fl = ddg.getFileList();
+//        System.out.println("  fl.size " + fl.size());
+        for (int k = 0; k < fl.size(); k++) {
+            if (fl.get(k).lastModified() > d1) {
+                lastFL.add(fl.get(k));
+                //System.out.println(k + "  " + fl.get(k).getAbsolutePath() + "  " + fl.get(k).lastModified());
+            }
+        }
         // prepaering and creating the list of files,
         // which are candidates to removing
         prepareRemoveFiles(2);
         // search duplicate content in filesand then remove that dubles
         dupl = getDuple(lastFL);
+        Calendar calendar = GregorianCalendar.getInstance();
+//        if (calendar.get(Calendar.MINUTE) % 2 == 0) {
+//            System.out.println("ARCHIVE!");
+//            fvc.createArchiveREC();
+//        }
     }
 
-    //@Schedule(dayOfWeek = "*", month = "*", hour = "*", dayOfMonth = "*/15", year = "*", minute = "*", second = "0", persistent = true)
     /**
      * every 15 days we are investigate here the existence of possible
      * doublicate files and remove them. The time deep is 33 days

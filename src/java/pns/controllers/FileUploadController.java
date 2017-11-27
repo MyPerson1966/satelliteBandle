@@ -111,6 +111,7 @@ public class FileUploadController implements Runnable {
     }
 
     public String getRooot() {
+        rooot = rooot.replace('\\', '/');
         return rooot;
     }
 

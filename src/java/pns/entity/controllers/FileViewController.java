@@ -12,7 +12,9 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Set;
 import java.util.TimeZone;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -157,27 +159,86 @@ public class FileViewController {
             fsa.createDir(tmpdir);
             tmpName = tmpdir + pns.utils.RStrings.rndString(3, 'a', 'z') + "_" + fmCurr.getFileName();
             fsa.setFullFileName(tmpName);
-            System.out.println("  fsa.getFullFileName() " + fsa.getFullFileName());
+            //System.out.println("  fsa.getFullFileName() " + fsa.getFullFileName());
             fsa.fileWrite(fmCurr.getContent());
         }
     }
 
-    public void createArchiveREC() {
+    /*
+
+
+
+Info:   Size 54 kB
+Info:   del:   false  Name  C:/glassfish4/glassfish/domains/domain1/satdata/2017/6-6/NMIN_201706060753__10116.txt
+Info:   del:   false
+Info:   file C:/glassfish4/glassfish/domains/domain1/satdata/2017/9-4/NDHJ_201709041223__25_ — копия.txt
+Info:   exists false
+Info:   Size 103 kB
+Info:   del:   false  Name  C:/glassfish4/glassfish/domains/domain1/satdata/2017/9-4/NDHJ_201709041223__25_ — копия.txt
+Info:   del:   false
+Info:   file C:/glassfish4/glassfish/domains/domain1/satdata/2017/9-4/NDHJ_2017090412230__25_.txt
+Info:   exists false
+Info:   Size 127 kB
+Info:   del:   false  Name  C:/glassfish4/glassfish/domains/domain1/satdata/2017/9-4/NDHJ_2017090412230__25_.txt
+Info:   del:   false
+Info:   file C:/glassfish4/glassfish/domains/domain1/satdata/2017/9-4/NDHJ_201709041223__25_ — копия (2).txt
+Info:   exists false
+Info:   Size 95 kB
+Info:   del:   false  Name  C:/glassfish4/glassfish/domains/domain1/satdata/2017/9-4/NDHJ_201709041223__25_ — копия (2).txt
+Info:   del:   false
+Info:   file C:/glassfish4/glassfish/domains/domain1/satdata/2017/9-4/ICDM_201709041159__10116.txt
+Info:   exists false
+Info:   Size 119 kB
+Info:   del:   false  Name  C:/glassfish4/glassfish/domains/domain1/satdata/2017/9-4/ICDM_201709041159__10116.txt
+Info:   del:   false
+Info:   file C:/glassfish4/glassfish/domains/domain1/satdata/2017/7-17/JMKB_201707171016__10116.txt
+Info:   exists false
+Info:   Size 64 kB
+Info:   del:   false  Name  C:/glassfish4/glassfish/domains/domain1/satdata/2017/7-17/JMKB_201707171016__10116.txt
+Info:   del:   false
+Info:   file C:/glassfish4/glassfish/domains/domain1/satdata/2017/7-17/GREM_201707171009__10116.txt
+Info:   exists false
+Info:   Size 112 kB
+Info:   del:   false  Name  C:/glassfish4/glassfish/domains/domain1/satdata/2017/7-17/GREM_201707171009__10116.txt
+Info:   del:   false
+Info:   fml    fml.size()  18
+     */
+    public void createArchiveREC() throws Exception {
         String rroot = fuc.getRooot() + "/satdata";
-        System.out.println("  rroot " + rroot);
+        //System.out.println("  rroot " + rroot);
         fmc.setArchPath(rroot);
-        List<FileMeasured> fml = fmc.readArchiveFileDir();
+        Set<FileMeasured> fml = fmc.readArchiveFileDir();
         System.out.println("  fml    fml.size()  " + fml.size());
-        for (int k = 0; k < fml.size(); k++) {
-            FileMeasured tmpf = fml.get(k);
-            System.out.println("  file " + tmpf.getFileName());
-            System.out.println(" exists " + fmList.contains(tmpf));
-//            if (!fmList.contains(tmpf)) {
-//                emA.getTransaction().begin();
-//                emA.persist(tmpf);
-//                emA.getTransaction().commit();
-//            }
+
+        for (Iterator<FileMeasured> it = fml.iterator(); it.hasNext();) {
+            String tmpFName = rroot + "/";
+            FileMeasured tmpf = it.next();
+            if (!fmList.contains(tmpf)) {
+                String fileMonth = tmpf.getMonth() + "";
+                if (tmpf.getMonth() < 10) {
+                    fileMonth = "0" + tmpf.getMonth();
+                }
+                String fileDate = tmpf.getDate() + "";
+                if (tmpf.getDate() < 10) {
+                    fileDate = "0" + tmpf.getDate();
+                }
+                tmpFName += tmpf.getYear() + "/" + fileMonth + "-" + fileDate + "/" + tmpf.getFileName();
+                System.out.println("  file " + tmpFName);
+                System.out.println(" exists " + fmList.contains(tmpf));
+                System.out.println(" Size " + (1 + tmpf.getContent().length() / 1024) + " kB ");
+                emA.getTransaction().begin();
+                emA.persist(tmpf);
+                emA.getTransaction().commit();
+                File f = new File(tmpFName);
+
+                boolean ex = f.exists();
+                System.out.println("del:   " + ex + "  Name  " + tmpFName);
+                boolean del = f.delete();
+                System.out.println("del:   " + del);
+            }
         }
+        System.out.println("  fml    fml.size()  " + fml.size());
+        fml = null;
     }
 
     public String uploadMomentUTC(FileMeasured fm) {
