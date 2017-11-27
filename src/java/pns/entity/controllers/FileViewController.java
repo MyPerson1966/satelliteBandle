@@ -7,6 +7,7 @@ package pns.entity.controllers;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.Serializable;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -18,7 +19,9 @@ import java.util.logging.Logger;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
+import javax.enterprise.context.RequestScoped;
 import javax.enterprise.context.SessionScoped;
+import javax.faces.bean.ViewScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
 import javax.persistence.EntityManager;
@@ -32,19 +35,21 @@ import javax.persistence.criteria.Root;
 import javax.xml.parsers.ParserConfigurationException;
 import org.xml.sax.SAXException;
 import pns.controllers.FileDownloadController;
+import pns.controllers.FileUploadController;
 import pns.entity.User;
 import pns.fileUtils.FileActor;
 import pns.fileUtils.FileSpecActor;
 import pns.kiam.entities.satellites.FileMeasured;
 import pns.kiam.entities.telescopes.Telescope;
+import pns.kiam.filecontrol.FileMeasuredController;
 
 /**
  *
  * @author User
  */
 @Named
-@SessionScoped
-public class FileViewController extends AbstractEntityController {
+@RequestScoped
+public class FileViewController {
 
     private List<FileMeasured> fmList = new ArrayList<>();
     private FileMeasured fmCurr;
@@ -60,6 +65,12 @@ public class FileViewController extends AbstractEntityController {
 
     @Inject
     private FileDownloadController fdc;
+
+    @Inject
+    private FileUploadController fuc;
+
+    @Inject
+    private FileMeasuredController fmc;
 
     @PostConstruct
     public void init() {
@@ -124,6 +135,7 @@ public class FileViewController extends AbstractEntityController {
 
     public void setFilterValue(String filterValue) {
         this.filterValue = filterValue;
+        System.out.println("   4444   555  555 55 " + filterValue);
     }
 
     public void recDownload(FileMeasured fm) {
@@ -151,7 +163,21 @@ public class FileViewController extends AbstractEntityController {
     }
 
     public void createArchiveREC() {
-        //xxparser.getFileMeasuredController().readArchiveFileDir();
+        String rroot = fuc.getRooot() + "/satdata";
+        System.out.println("  rroot " + rroot);
+        fmc.setArchPath(rroot);
+        List<FileMeasured> fml = fmc.readArchiveFileDir();
+        System.out.println("  fml    fml.size()  " + fml.size());
+        for (int k = 0; k < fml.size(); k++) {
+            FileMeasured tmpf = fml.get(k);
+            System.out.println("  file " + tmpf.getFileName());
+            System.out.println(" exists " + fmList.contains(tmpf));
+//            if (!fmList.contains(tmpf)) {
+//                emA.getTransaction().begin();
+//                emA.persist(tmpf);
+//                emA.getTransaction().commit();
+//            }
+        }
     }
 
     public String uploadMomentUTC(FileMeasured fm) {
@@ -162,6 +188,7 @@ public class FileViewController extends AbstractEntityController {
     }
 
     public void filterOutput() {
+        System.out.println("    public void filterOutput(): filterValue " + filterValue);
         if (filterValue.length() == 0 || filterValue == null) {
             return;
         }
