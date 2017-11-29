@@ -11,6 +11,7 @@ import java.io.Serializable;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
@@ -18,6 +19,7 @@ import java.util.Set;
 import java.util.TimeZone;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javafx.print.Collation;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
@@ -36,9 +38,11 @@ import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
 import javax.xml.parsers.ParserConfigurationException;
 import org.xml.sax.SAXException;
+import pns.common.RemoverDuplicatesTimeTable;
 import pns.controllers.FileDownloadController;
 import pns.controllers.FileUploadController;
 import pns.entity.User;
+import pns.fileUtils.FReader;
 import pns.fileUtils.FileActor;
 import pns.fileUtils.FileSpecActor;
 import pns.kiam.entities.satellites.FileMeasured;
@@ -74,9 +78,13 @@ public class FileViewController {
     @Inject
     private FileMeasuredController fmc;
 
+    @EJB
+    private RemoverDuplicatesTimeTable removeDuplTT;
+
     @PostConstruct
     public void init() {
         loadFileList();
+        // Collections.sort(fmList);
     }
 
     private List loadFileList() {
@@ -164,56 +172,42 @@ public class FileViewController {
         }
     }
 
-    /*
-
-
-
-Info:   Size 54 kB
-Info:   del:   false  Name  C:/glassfish4/glassfish/domains/domain1/satdata/2017/6-6/NMIN_201706060753__10116.txt
-Info:   del:   false
-Info:   file C:/glassfish4/glassfish/domains/domain1/satdata/2017/9-4/NDHJ_201709041223__25_ — копия.txt
-Info:   exists false
-Info:   Size 103 kB
-Info:   del:   false  Name  C:/glassfish4/glassfish/domains/domain1/satdata/2017/9-4/NDHJ_201709041223__25_ — копия.txt
-Info:   del:   false
-Info:   file C:/glassfish4/glassfish/domains/domain1/satdata/2017/9-4/NDHJ_2017090412230__25_.txt
-Info:   exists false
-Info:   Size 127 kB
-Info:   del:   false  Name  C:/glassfish4/glassfish/domains/domain1/satdata/2017/9-4/NDHJ_2017090412230__25_.txt
-Info:   del:   false
-Info:   file C:/glassfish4/glassfish/domains/domain1/satdata/2017/9-4/NDHJ_201709041223__25_ — копия (2).txt
-Info:   exists false
-Info:   Size 95 kB
-Info:   del:   false  Name  C:/glassfish4/glassfish/domains/domain1/satdata/2017/9-4/NDHJ_201709041223__25_ — копия (2).txt
-Info:   del:   false
-Info:   file C:/glassfish4/glassfish/domains/domain1/satdata/2017/9-4/ICDM_201709041159__10116.txt
-Info:   exists false
-Info:   Size 119 kB
-Info:   del:   false  Name  C:/glassfish4/glassfish/domains/domain1/satdata/2017/9-4/ICDM_201709041159__10116.txt
-Info:   del:   false
-Info:   file C:/glassfish4/glassfish/domains/domain1/satdata/2017/7-17/JMKB_201707171016__10116.txt
-Info:   exists false
-Info:   Size 64 kB
-Info:   del:   false  Name  C:/glassfish4/glassfish/domains/domain1/satdata/2017/7-17/JMKB_201707171016__10116.txt
-Info:   del:   false
-Info:   file C:/glassfish4/glassfish/domains/domain1/satdata/2017/7-17/GREM_201707171009__10116.txt
-Info:   exists false
-Info:   Size 112 kB
-Info:   del:   false  Name  C:/glassfish4/glassfish/domains/domain1/satdata/2017/7-17/GREM_201707171009__10116.txt
-Info:   del:   false
-Info:   fml    fml.size()  18
+    /**
+     * Generates an archive of uploaded file's content.
+     * <br />
+     * At first removes dubbed and then puts the file's content into the
+     * database
+     * <br />
+     * The archived files are removing from the hard
+     *
+     * @return
+     * @throws Exception
      */
-    public void createArchiveREC() throws Exception {
+    public String createArchiveREC() {
+        System.out.println(new Date());
+//        System.out.println("---------------------Removing dobbled ---------------");
+//        removeDuplTT.setFileAgeInDays(30);
+//        removeDuplTT.removeDupleFiles();
+
+        System.out.println("");
+        System.out.println("---------------------------------------");
         String rroot = fuc.getRooot() + "/satdata";
-        //System.out.println("  rroot " + rroot);
+        System.out.println("  Go across  " + rroot + " and collects existing file ");
+        System.out.println(new Date());
+
         fmc.setArchPath(rroot);
         Set<FileMeasured> fml = fmc.readArchiveFileDir();
-        System.out.println("  fml    fml.size()  " + fml.size());
 
+        System.out.println("  Found " + fml.size() + "  files");
+        int k = 0;
         for (Iterator<FileMeasured> it = fml.iterator(); it.hasNext();) {
             String tmpFName = rroot + "/";
             FileMeasured tmpf = it.next();
+
             if (!fmList.contains(tmpf)) {
+                k++;
+//                long rr = pns.utils.numbers.RInts.rndLong(1000, 9999) + k;
+//                tmpf.setId(rr + System.nanoTime());
                 String fileMonth = tmpf.getMonth() + "";
                 if (tmpf.getMonth() < 10) {
                     fileMonth = "0" + tmpf.getMonth();
@@ -223,22 +217,29 @@ Info:   fml    fml.size()  18
                     fileDate = "0" + tmpf.getDate();
                 }
                 tmpFName += tmpf.getYear() + "/" + fileMonth + "-" + fileDate + "/" + tmpf.getFileName();
-                System.out.println("  file " + tmpFName);
-                System.out.println(" exists " + fmList.contains(tmpf));
-                System.out.println(" Size " + (1 + tmpf.getContent().length() / 1024) + " kB ");
+                System.out.println("=======> Operation No " + k);
+
+                System.out.println(" Working with file " + tmpFName);
+                System.out.println(" File content size " + (1 + tmpf.getContent().length() / 1024) + " kB ");
+//IllegalArgumentException
+                System.out.println("  ************  ");
+                System.out.println("  IN DB   " + emA.contains(tmpf));
+                System.out.println("  ************  ");
+
                 emA.getTransaction().begin();
                 emA.persist(tmpf);
                 emA.getTransaction().commit();
                 File f = new File(tmpFName);
-
                 boolean ex = f.exists();
-                System.out.println("del:   " + ex + "  Name  " + tmpFName);
+                System.out.println(" Exist File  " + tmpFName + " -- Result:   " + ex);
                 boolean del = f.delete();
-                System.out.println("del:   " + del);
+                System.out.println(" Delete File  " + tmpFName + " -- Result:   " + del);
             }
         }
-        System.out.println("  fml    fml.size()  " + fml.size());
+        System.out.println("  Number of Archive Operations:   " + k);
         fml = null;
+        init();
+        return "/index.xhtml?redirect=true";
     }
 
     public String uploadMomentUTC(FileMeasured fm) {

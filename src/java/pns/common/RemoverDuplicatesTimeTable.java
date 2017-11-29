@@ -34,6 +34,7 @@ public class RemoverDuplicatesTimeTable {
     private String rootDir = "";
     private List<File> lastFL = new ArrayList<>();
     private long maxFileAge = 1000 * 3600 * 24;
+    private int fileAgeInDays = 3;
     private List<File> dupl = new ArrayList<>();
 
     ;
@@ -46,10 +47,10 @@ public class RemoverDuplicatesTimeTable {
 //        System.out.println(this.getClass().getCanonicalName() + "   Timer event: " + new Date());
 //        //fvc.createArchiveREC();
 //    }
-    @Schedule(dayOfWeek = "*", month = "*", hour = "*", dayOfMonth = "*", year = "*", minute = "*", second = "0", persistent = true)
+//    @Schedule(dayOfWeek = "*", month = "*", hour = "*", dayOfMonth = "*", year = "*", minute = "*/20", second = "0", persistent = true)
     /**
-     * every 20 minutes we are investigate here the existence of possible
-     * doublicate files and remove them. The time deep is 2 days
+     * every 17 minutes we are investigate here the existence of possible dubbed
+     * files and remove them. The time deep is fileAgeInDays (default = 3) days
      */
     public void removeDupleFiles() {
         lastFL.clear();
@@ -59,24 +60,35 @@ public class RemoverDuplicatesTimeTable {
         System.out.println(" ----->> Now: " + new Date() + "   " + maxFileAge + " milisec ago " + new Date(d1));
 
         System.out.println();
-        List<File> fl = ddg.getFileList();
+//        List<File> fl = ddg.getFileList();
 //        System.out.println("  fl.size " + fl.size());
-        for (int k = 0; k < fl.size(); k++) {
-            if (fl.get(k).lastModified() > d1) {
-                lastFL.add(fl.get(k));
-                //System.out.println(k + "  " + fl.get(k).getAbsolutePath() + "  " + fl.get(k).lastModified());
-            }
-        }
+//        for (int k = 0; k < fl.size(); k++) {
+//            if (fl.get(k).lastModified() > d1) {
+//                lastFL.add(fl.get(k));
+//                //System.out.println(k + "  " + fl.get(k).getAbsolutePath() + "  " + fl.get(k).lastModified());
+//            }
+//        }
         // prepaering and creating the list of files,
         // which are candidates to removing
-        prepareRemoveFiles(2);
-        // search duplicate content in filesand then remove that dubles
+        //The argument here is number of days which we are observing
+        prepareRemoveFiles(fileAgeInDays);
+        // search dubbed content in filesand then remove that dubles
         dupl = getDuple(lastFL);
-        Calendar calendar = GregorianCalendar.getInstance();
+//        Calendar calendar = GregorianCalendar.getInstance();
 //        if (calendar.get(Calendar.MINUTE) % 2 == 0) {
 //            System.out.println("ARCHIVE!");
 //            fvc.createArchiveREC();
 //        }
+    }
+
+    /**
+     * Sets the age in days of file. if the file has a dubbed content and it is
+     * lives less then fileAgeInDays it will be removed
+     *
+     * @param fileAgeInDays
+     */
+    public void setFileAgeInDays(int fileAgeInDays) {
+        this.fileAgeInDays = fileAgeInDays;
     }
 
     /**
@@ -88,7 +100,7 @@ public class RemoverDuplicatesTimeTable {
         // prepaering and creating the list of files,
         // which are candidates to removing
         prepareRemoveFiles(33);
-        // search duplicate content in filesand then remove that dubles
+        // search dubbed content in filesand then remove that dubles
         dupl = getDuple(lastFL);
     }
 
@@ -112,12 +124,13 @@ public class RemoverDuplicatesTimeTable {
         }
 
         long d1 = d - maxFileAge * numberOfDays;
-        lastFL.clear();
         dupl = new ArrayList<>();
         rootDir = fa.getAppRootPath(true);
         //ddg.setRootDir(rootDir + "/satdata");
         ddg.goDeep(rootDir + "/satdata", true);
-        System.out.println(" Prepare to remove duple content files"
+        System.out.println("");
+        System.out.println("    ************   Remove  prepare  ******* ");
+        System.out.println("           Prepare to remove duple content files"
                 + " in " + rootDir + "/satdata, "
                 + " created  after " + new Date(d1) + "... ");
 // refresh files, that older then dl
@@ -134,15 +147,26 @@ public class RemoverDuplicatesTimeTable {
     private void getFilesAfter(long age) {
         lastFL.clear();
         List<File> fl = ddg.getFileList();
+        Date dd = new Date(age);
+        System.out.println(" ================== Files,  which are older then " + dd + "   ==================   ");
 //        System.out.println("  fl.size " + fl.size());
         for (int k = 0; k < fl.size(); k++) {
             if (fl.get(k).lastModified() > age) {
                 lastFL.add(fl.get(k));
-                //System.out.println(k + "  " + fl.get(k).getAbsolutePath() + "  " + fl.get(k).lastModified());
+                System.out.println(k + " **=====> File to Investigate " + fl.get(k).getAbsolutePath() + "  Modified " + new Date(fl.get(k).lastModified()));
+            } else {
+                System.out.println(k + "  <===== File omited Investigate " + fl.get(k).getAbsolutePath() + "  Modified " + new Date(fl.get(k).lastModified()));
             }
         }
     }
 
+    /**
+     * Generate a list of file, which have duple content As soon as the dubbed
+     * found ( look for 'hasContent' method) the file removes from the hard
+     *
+     * @param fl
+     * @return
+     */
     private List<File> getDuple(List<File> fl) {
 
         List<File> res = new ArrayList<>();
@@ -152,7 +176,6 @@ public class RemoverDuplicatesTimeTable {
                 if (f.isFile()) {
                     boolean exists = false;
                     exists = hasContent(f, fl);
-//                System.out.println(exists + "   " + f.getAbsolutePath());
                     if (exists) {
                         //System.out.println("   " + f.getAbsolutePath());
                         res.add(f);
@@ -161,46 +184,35 @@ public class RemoverDuplicatesTimeTable {
             }
         }
 
-        System.out.println(" Found   " + res.size() + " of duples in " + fl.size() + " files ");
+        System.out.println(" Found   " + res.size() + " of dubbed in " + fl.size() + " files ");
 
         return res;
     }
 
     /**
-     * Deletes the files from the hard, which are in a list parameter The second
-     * parameter shows from which element of the list it`s need to remove the
-     * file
+     * Tests, has the file f the same content as in some file of list of files
+     * fl. if so, the file removes from the hard
      *
+     * @param f
      * @param fl
-     * @param startFrom
+     * @return
      */
-    private void deleteFilesFromHard(List<File> fl, int startFrom) {
-        int s = 0;
-        for (int k = startFrom; k < fl.size(); k++) {
-            File tmpf = fl.get(k);
-            if (tmpf.exists()) {
-                if (tmpf.delete()) {
-                    dupl.remove(tmpf);
-                    s++;
-                    //System.out.println(tmpf.getName()+"  deleted");
-                }
-            }
-        }
-        System.out.println(s + " files have been deleted");
-    }
-
     private boolean hasContent(File f, List<File> fl) {
-//        System.out.println("");
+        System.out.println("");
+        System.out.println("     Method " + this.getClass().getCanonicalName() + ".hasContent(File f, List<File> fl)");
+        System.out.println("     Checking, has the file f the same content as in some file of list of files. if so, the file removes from the hard");
         if (f.isFile()) {
 
             if (f.length() < 2) {
+                System.out.println(" The size of file " + f.getAbsolutePath() + " is too small. This file removes from the hard");
                 f.delete();
                 return false;
             }
-//            System.out.println(" ----> f: " + f.getAbsolutePath() + "    " + fl.size());
             FileActor testFA = new FileActor();
             String testContent = "";
-            testFA.fileRead(f.getAbsolutePath());
+            if (f.exists()) {
+                testFA.fileRead(f.getAbsolutePath());
+            }
             String tss = " ";
             testContent = testFA.getFileContent();
             tss += " TEST CONTENT " + testContent;
@@ -241,7 +253,7 @@ public class RemoverDuplicatesTimeTable {
                             String tmpfParentName = tmpf.getParentFile().getAbsolutePath();
                             if (tmpf.delete()) {
                                 dupl.remove(tmpf);
-                                //System.out.println(tmpf.getName()+"  deleted");
+                                System.out.println(" The file " + tmpf.getName() + " has the dubbed content and then  deleted");
                             }
 
                         }

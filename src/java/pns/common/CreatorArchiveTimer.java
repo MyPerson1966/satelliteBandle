@@ -23,14 +23,13 @@ public class CreatorArchiveTimer {
     @Inject
     private FileViewController fvc;
 
-//    @Schedule(dayOfWeek = "*", month = "*", hour = "*", dayOfMonth = "*", year = "*", minute = "*", second = "0", persistent = true)
-    @Schedule(dayOfWeek = "*", month = "*", hour = "*", dayOfMonth = "*", year = "*", minute = "*/2", second = "30", persistent = true)
-    public void myTimer() {
+//    @Schedule(dayOfWeek = "*", month = "*", hour = "*", dayOfMonth = "*", year = "*", minute = "*/10", second = "0", persistent = true)
+    public void archivator() {
         System.out.println(this.getClass().getCanonicalName() + "   Timer event: " + new Date());
         try {
             fvc.createArchiveREC();
         } catch (Exception ex) {
-            System.out.println("  ex  " + ex.getMessage());
+            System.err.println("  ex  " + ex.getMessage());
             //Logger.getLogger(CreatorArchiveTimer.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
