@@ -49,8 +49,7 @@
                 </pre>
             </p:dialog>
             <div style=" text-align:  right; padding: 5px;">
-                <p:commandButton value="CreateArhive"   >
-                    <p:ajax event="click" update="@form" listener="#{fileViewController.createArchiveREC()}" />
+                <p:commandButton value="CreateArhive"  action="#{fileViewController.createArchiveREC()}"  >
                 </p:commandButton> 
             </div>
             

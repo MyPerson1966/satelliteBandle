@@ -8,6 +8,7 @@ package pns.entity.controllers;
 import java.io.File;
 import java.io.IOException;
 import java.io.Serializable;
+import java.sql.SQLException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -31,6 +32,7 @@ import javax.inject.Named;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
+import javax.persistence.PersistenceException;
 import javax.persistence.Query;
 import javax.persistence.TypedQuery;
 import javax.persistence.criteria.CriteriaBuilder;
@@ -185,9 +187,9 @@ public class FileViewController {
      */
     public String createArchiveREC() {
         System.out.println(new Date());
-//        System.out.println("---------------------Removing dobbled ---------------");
-//        removeDuplTT.setFileAgeInDays(30);
-//        removeDuplTT.removeDupleFiles();
+        System.out.println("---------------------Removing dobbled ---------------");
+        removeDuplTT.setFileAgeInDays(100);
+        removeDuplTT.removeDupleFiles();
 
         System.out.println("");
         System.out.println("---------------------------------------");
@@ -199,13 +201,14 @@ public class FileViewController {
         Set<FileMeasured> fml = fmc.readArchiveFileDir();
 
         System.out.println("  Found " + fml.size() + "  files");
+
         int k = 0;
         for (Iterator<FileMeasured> it = fml.iterator(); it.hasNext();) {
             String tmpFName = rroot + "/";
             FileMeasured tmpf = it.next();
 
-            if (!fmList.contains(tmpf)) {
-                k++;
+            if (!emA.contains(tmpf)) {
+                //if (!fmList.contains(tmpf)) {
 //                long rr = pns.utils.numbers.RInts.rndLong(1000, 9999) + k;
 //                tmpf.setId(rr + System.nanoTime());
                 String fileMonth = tmpf.getMonth() + "";
@@ -226,9 +229,14 @@ public class FileViewController {
                 System.out.println("  IN DB   " + emA.contains(tmpf));
                 System.out.println("  ************  ");
 
-                emA.getTransaction().begin();
-                emA.persist(tmpf);
-                emA.getTransaction().commit();
+                try {
+                    emA.getTransaction().begin();
+                    emA.persist(tmpf);
+                    emA.getTransaction().commit();
+                    k++;
+                } catch (PersistenceException e) {
+                    System.out.println(new Date() + "  The record with hash " + tmpf.getIntHash() + "  already exists. This operation have been crashed.   ");
+                }
                 File f = new File(tmpFName);
                 boolean ex = f.exists();
                 System.out.println(" Exist File  " + tmpFName + " -- Result:   " + ex);
@@ -237,7 +245,7 @@ public class FileViewController {
             }
         }
         System.out.println("  Number of Archive Operations:   " + k);
-        fml = null;
+        fml.clear();
         init();
         return "/index.xhtml?redirect=true";
     }
