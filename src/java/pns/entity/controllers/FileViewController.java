@@ -56,8 +56,8 @@ import pns.kiam.filecontrol.FileMeasuredController;
  * @author User
  */
 @Named
-@RequestScoped
-public class FileViewController {
+@SessionScoped
+public class FileViewController implements Serializable {
 
     private List<FileMeasured> fmList = new ArrayList<>();
     private FileMeasured fmCurr;
@@ -147,7 +147,6 @@ public class FileViewController {
 
     public void setFilterValue(String filterValue) {
         this.filterValue = filterValue;
-        System.out.println("   4444   555  555 55 " + filterValue);
     }
 
     public void recDownload(FileMeasured fm) {
@@ -186,13 +185,12 @@ public class FileViewController {
      * @throws Exception
      */
     public String createArchiveREC() {
-        System.out.println(new Date());
-        System.out.println("---------------------Removing dobbled ---------------");
+        System.out.println("--------------------- Creating Archiv/ Step 1: Removing dobbled ---------------" + new Date());
         removeDuplTT.setFileAgeInDays(100);
         removeDuplTT.removeDupleFiles();
 
         System.out.println("");
-        System.out.println("---------------------------------------");
+        System.out.println("--------------------- Creating Archiv/ Step 2: Collect the files to Archive ---------------" + new Date());
         String rroot = fuc.getRooot() + "/satdata";
         System.out.println("  Go across  " + rroot + " and collects existing file ");
         System.out.println(new Date());
@@ -224,12 +222,12 @@ public class FileViewController {
 
                 System.out.println(" Working with file " + tmpFName);
                 System.out.println(" File content size " + (1 + tmpf.getContent().length() / 1024) + " kB ");
-//IllegalArgumentException
                 System.out.println("  ************  ");
                 System.out.println("  IN DB   " + emA.contains(tmpf));
                 System.out.println("  ************  ");
 
                 try {
+                    System.out.println("--------------------- Creating Archiv/ Step 3: Adding file to Archive ---------------" + new Date());
                     emA.getTransaction().begin();
                     emA.persist(tmpf);
                     emA.getTransaction().commit();
@@ -248,6 +246,28 @@ public class FileViewController {
         fml.clear();
         init();
         return "/index.xhtml?redirect=true";
+    }
+
+    public String dataSize(FileMeasured fm) {
+        double res = 0;
+        String suf = " bytes";
+        if (fm != null) {
+            res = fm.getContent().length();
+            if (res > 1024 && res < 1024 * 1024) {
+                res = res / 1024;
+                res = ((int) (100 * res)) / 100;
+                suf = " Kb ";
+            } else if (res > 1024 * 1024 && res < 1024 * 1024 * 1024) {
+                res = res / 1024 / 1024;
+                res = ((int) (100 * res)) / 100;
+                suf = " Mb ";
+            } else if (res > 1024 * 1024 * 1024 && res < 1024 * 1024 * 1024 * 1024) {
+                res = res / 1024 / 1024 / 1024;
+                res = ((int) (100 * res)) / 100;
+                suf = " Gb ";
+            }
+        }
+        return res + suf;
     }
 
     public String uploadMomentUTC(FileMeasured fm) {

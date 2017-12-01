@@ -157,10 +157,14 @@ public class FileUploadController implements Runnable {
         if (f != null) {
             fa = new FileActor();
             String fullName = f.getAbsolutePath();
-            if (fa.fileRead(fullName)) {
-                //System.out.println("    @@@@@   " + fullName);
-                return fa.getStringBuffer().toString();
-                //System.out.println("  " + fSelectedContent);
+            System.out.println("   String outputFileContent(File f)  " + fullName + "  " + f.exists());
+            if (f.exists()) {
+                if (fa.fileRead(fullName)) {
+
+                    System.out.println("  ------------------>>>@@@@@   " + fullName + " LEN " + fa.getFileContent().length());
+                    return fa.getFileContent().toString();
+                    //System.out.println("  " + fSelectedContent);
+                }
             }
         }
         fa = null;
@@ -272,7 +276,7 @@ public class FileUploadController implements Runnable {
             while (sc.hasNext()) {
                 String currLine = sc.nextLine() + System.lineSeparator();
                 //currLine = new String(currLine.getBytes(), "cp1251");
-                System.out.println("   " + currLine);
+                //System.out.println("   " + currLine);
                 fContent += currLine;
                 //progress = calcProgress(currLine);
                 LNG++;

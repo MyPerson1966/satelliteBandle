@@ -15,7 +15,8 @@
                          paginatorAlwaysVisible="false"
                          value="#{fileViewController.fmList }"  
                          var="fl"  paginator="true" 
-                            rowsPerPageTemplate="6,12,18,24,30,36,42" rows="6"
+                            rowsPerPageTemplate="12,15,18,21,24,27,30,36,39,42" 
+                            rows="15" columns="3"
         
                     >
             <f:facet name="header" >
@@ -27,13 +28,16 @@
                 </p:outputPanel>
                     
             </f:facet>
-            <p:panel header="#{fl.fileName}">
+                <p:panel header="#{fl.fileName}  || &nbsp;&nbsp; [ #{ fileViewController.dataSize(fl)} ]   ">
+                <strong>
                 <h:outputText value="Uploaded at #{fileViewController.uploadMomentUTC(fl)}" /> 
-                        
+                <br />
+                <h:outputText value="Hash: #{fl.strHash}" /> 
+                </strong> 
                 <h:panelGrid columns="2" style="width:100%"> 
-                <p:commandLink value="View" >
+                <p:commandButton value="View"  >
                     <p:ajax event="click" listener="#{fileViewController.selectFile(fl)}" update="fileForm:fileViewDLG" oncomplete="PF('fileViewDLG').show();"   />
-                </p:commandLink>
+                </p:commandButton>
                 <p:commandButton value="Download" ajax="false" action="#{fileViewController.recDownload( fl  )}" />    
                 </h:panelGrid>
             </p:panel>
@@ -45,7 +49,7 @@
                 <p:ajax event="close" listener="#{fileViewController.deSelect()}"  />
                         
                 <pre style="height: 400px; overflow: scroll">
-                    <p:outputLabel value="#{fileViewController.fmCurr.content}" />
+                    <p:outputLabel value="#{fileViewController.fmCurr.content}  " />
                 </pre>
             </p:dialog>
             <div style=" text-align:  right; padding: 5px;">
