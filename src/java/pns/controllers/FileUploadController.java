@@ -160,7 +160,6 @@ public class FileUploadController implements Runnable {
             System.out.println("   String outputFileContent(File f)  " + fullName + "  " + f.exists());
             if (f.exists()) {
                 if (fa.fileRead(fullName)) {
-
                     System.out.println("  ------------------>>>@@@@@   " + fullName + " LEN " + fa.getFileContent().length());
                     return fa.getFileContent().toString();
                     //System.out.println("  " + fSelectedContent);

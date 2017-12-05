@@ -206,9 +206,7 @@ public class FileViewController implements Serializable {
             FileMeasured tmpf = it.next();
 
             if (!emA.contains(tmpf)) {
-                //if (!fmList.contains(tmpf)) {
-//                long rr = pns.utils.numbers.RInts.rndLong(1000, 9999) + k;
-//                tmpf.setId(rr + System.nanoTime());
+
                 String fileMonth = tmpf.getMonth() + "";
                 if (tmpf.getMonth() < 10) {
                     fileMonth = "0" + tmpf.getMonth();
@@ -227,7 +225,7 @@ public class FileViewController implements Serializable {
                 System.out.println("  ************  ");
 
                 try {
-                    System.out.println("--------------------- Creating Archiv/ Step 3: Adding file to Archive ---------------" + new Date());
+                    System.out.println("--------------------- Creating Archiv / Step 3: Adding file to Archive ---------------" + new Date());
                     emA.getTransaction().begin();
                     emA.persist(tmpf);
                     emA.getTransaction().commit();

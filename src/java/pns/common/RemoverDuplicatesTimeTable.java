@@ -42,12 +42,7 @@ public class RemoverDuplicatesTimeTable {
     @Inject
     private FileViewController fvc;
 
-//    @Schedule(dayOfWeek = "*", month = "*", hour = "*", dayOfMonth = "*", year = "*", minute = "*", second = "*/14", persistent = true)
-//    public void myTimer() {
-//        System.out.println(this.getClass().getCanonicalName() + "   Timer event: " + new Date());
-//        //fvc.createArchiveREC();
-//    }
-//    @Schedule(dayOfWeek = "*", month = "*", hour = "*", dayOfMonth = "*", year = "*", minute = "*/20", second = "0", persistent = true)
+    @Schedule(dayOfWeek = "*", month = "*", hour = "*", dayOfMonth = "*", year = "*", minute = "*/20", second = "0", persistent = true)
     /**
      * every 17 minutes we are investigate here the existence of possible dubbed
      * files and remove them. The time deep is fileAgeInDays (default = 3) days

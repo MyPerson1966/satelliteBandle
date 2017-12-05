@@ -24,7 +24,7 @@ public class CreatorArchiveTimer {
     private FileViewController fvc;
 
     // scheduler for struggle
-    //@Schedule(dayOfWeek = "*", month = "*", hour = "*/6", dayOfMonth = "*", year = "*", minute = "11", second = "0", persistent = true)
+    @Schedule(dayOfWeek = "*", month = "*", hour = "*/6", dayOfMonth = "*", year = "*", minute = "11", second = "0", persistent = true)
     // scheduler for testing
     //@Schedule(dayOfWeek = "*", month = "*", hour = "*", dayOfMonth = "*", year = "*", minute = "*/11", second = "0", persistent = true)
     public void archivator() {
