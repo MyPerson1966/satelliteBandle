@@ -16,7 +16,9 @@
                              action="#{directoryController.changeCurrDir(directoryController.rootDirectory)}" />
             <h:commandButton value="#{lng.UpLevel}" 
                              action="#{directoryController.changeCurrDir(directoryController.parentDirectory)}" />
-            
+        
+            <p:commandLink style="margin-left: 10px;  " value="Archive" action="archiv" />
+        
             <p:dataTable value="#{directoryController.subDirList}" var="dirname" lazy="true" 
                          rowIndexVar="rowIndex"
                          >
