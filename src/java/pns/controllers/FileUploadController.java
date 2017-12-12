@@ -207,7 +207,7 @@ public class FileUploadController implements Runnable {
         String prefaceName
                 = pns.utils.dateTimeMechanism.convertLongToDateStr(System.currentTimeMillis(),
                         "yyyyMMddHHmm_", true);
-        prefaceName = pns.utils.RStrings.rndString(4, 'A', 'Z') + "_" + prefaceName;
+        prefaceName = pns.utils.strings.RStrings.rndString(4, 'A', 'Z') + "_" + prefaceName;
         String instrument = "";   //"i_" + pns.utils.RSrings.rndString(3, 'A', 'S');
         String fileName = uploadedFile.getFileName();
         String fileProperName = fileName.split("\\.")[0];

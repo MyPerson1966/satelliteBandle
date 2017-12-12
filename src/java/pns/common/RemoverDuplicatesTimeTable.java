@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package pns.common;
 
 import java.io.File;
@@ -213,7 +208,7 @@ public class RemoverDuplicatesTimeTable {
             tss += " TEST CONTENT " + testContent;
 ////            System.out.println(tss);
             tss = "";
-            testContent = pns.utils.RStrings.removeSpaces(testContent);
+            testContent = pns.utils.strings.RStrings.removeSpaces(testContent);
             for (int k = 0; k < fl.size(); k++) {
                 File tmpf = fl.get(k);
                 boolean sameFile = f.getAbsolutePath().trim().equals(tmpf.getAbsolutePath().trim());
@@ -235,7 +230,7 @@ public class RemoverDuplicatesTimeTable {
 //                    System.out.println("    ttt REMOVE SPACES  " + ttt);
                     tss += "     TMP content" + System.lineSeparator() + tmpContent + System.lineSeparator();
 
-                    tmpContent = pns.utils.RStrings.removeSpaces(tmpContent);
+                    tmpContent = pns.utils.strings.RStrings.removeSpaces(tmpContent);
 
                     String[] tmpParts = tmpContent.split(testContent);
                     String[] testParts = testContent.split(tmpContent);

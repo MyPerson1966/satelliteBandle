@@ -81,25 +81,22 @@ public class UserController extends AbstractEntityController {
 //            selectedUser = new User();
 //        }
         System.out.println("Generate passwords ");
-        int rnd1 = pns.utils.RBytes.rndInt(15, 20);
-        int rnd2 = pns.utils.RBytes.rndInt(15, 20);
-        int rnd3 = pns.utils.RBytes.rndInt(15, 20);
-        int rnd4 = pns.utils.RBytes.rndInt(15, 20);
-        int rnd5 = pns.utils.RBytes.rndInt(2, 3);
-        int rnd6 = pns.utils.RBytes.rndInt(10, 14);
+        int rnd1 = pns.utils.numbers.RInts.rndInt(15, 20);
+        int rnd2 = pns.utils.numbers.RInts.rndInt(15, 20);
+        int rnd3 = pns.utils.numbers.RInts.rndInt(15, 20);
+        int rnd4 = pns.utils.numbers.RInts.rndInt(15, 20);
+        int rnd5 = pns.utils.numbers.RInts.rndInt(2, 3);
+        int rnd6 = pns.utils.numbers.RInts.rndInt(10, 14);
 
-        String didgitPW = pns.utils.RStrings.rndString(rnd3, '0', '9');
-        String didgitPW1 = pns.utils.RStrings.rndString(rnd4, '0', '9');
+        String didgitPW = pns.utils.strings.RStrings.rndString(rnd3, '0', '9');
+        String didgitPW1 = pns.utils.strings.RStrings.rndString(rnd4, '0', '9');
 
-        String smallPW = pns.utils.RStrings.rndString(rnd1, 'a', 'z');
-        String largePW = pns.utils.RStrings.rndString(rnd2, 'A', 'Z');
-        String smallPW1 = pns.utils.RStrings.rndString(rnd1, 'a', 'z');
-        String largePW1 = pns.utils.RStrings.rndString(rnd2, 'A', 'Z');
+        String smallPW = pns.utils.strings.RStrings.rndString(rnd1, 'a', 'z');
+        String largePW = pns.utils.strings.RStrings.rndString(rnd2, 'A', 'Z');
+        String smallPW1 = pns.utils.strings.RStrings.rndString(rnd1, 'a', 'z');
+        String largePW1 = pns.utils.strings.RStrings.rndString(rnd2, 'A', 'Z');
 
         String special = "";
-        for (int k = 0; k < rnd5; k++) {
-            special += "!$%^-_";
-        }
 
         pw = pw1 = "";
         for (int k1 = 0; k1 < rnd5; k1++) {
@@ -107,8 +104,8 @@ public class UserController extends AbstractEntityController {
             pw1 += smallPW1 + largePW1 + didgitPW1 + special;
         }
 
-        pw = pns.utils.RStrings.shaffleString(pw);
-        pw1 = pns.utils.RStrings.shaffleString(pw1);
+        pw = pns.utils.strings.RStrings.shaffleString(pw);
+        pw1 = pns.utils.strings.RStrings.shaffleString(pw1);
         pw = pw.substring(0, rnd6);
         pw1 = pw1.substring(0, rnd6);
 

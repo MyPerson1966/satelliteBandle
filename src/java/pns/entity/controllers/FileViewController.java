@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package pns.entity.controllers;
 
 import java.io.File;
@@ -47,8 +42,7 @@ import pns.entity.User;
 import pns.fileUtils.FReader;
 import pns.fileUtils.FileActor;
 import pns.fileUtils.FileSpecActor;
-import pns.kiam.entities.satellites.FileMeasured;
-import pns.kiam.entities.telescopes.Telescope;
+import pns.entity.FileMeasured;
 import pns.kiam.filecontrol.FileMeasuredController;
 
 /**
@@ -67,10 +61,9 @@ public class FileViewController implements Serializable {
     private String tmpName = "";
     private String filterValue = "";
 
-    protected EntityManagerFactory emfA = Persistence.createEntityManagerFactory("satelliteBandlePU");
-    //@PersistenceContext
-    protected EntityManager emA = emfA.createEntityManager();
-
+//    protected EntityManagerFactory emfA = Persistence.createEntityManagerFactory("satelliteBandlePU");
+//    //@PersistenceContext
+//    protected EntityManager emA = emfA.createEntityManager();
     @Inject
     private FileDownloadController fdc;
 
@@ -91,11 +84,11 @@ public class FileViewController implements Serializable {
 
     private List loadFileList() {
 
-        String qlString = " SELECT fm FROM FileMeasured fm ";
-        Query query = emA.createQuery(qlString, FileMeasured.class);
-        fmList = query.getResultList();
-        System.out.println("     ");
-        System.out.println("         fmList.size()   " + fmList.size());
+//        String qlString = " SELECT fm FROM FileMeasured fm ";
+//        Query query = emA.createQuery(qlString, FileMeasured.class);
+//        fmList = query.getResultList();
+//        System.out.println("     ");
+//        System.out.println("         fmList.size()   " + fmList.size());
 //        try {
 //            Root<FileMeasured> res = cq.from(FileMeasured.class);
 //            cq.select(res);
@@ -166,7 +159,7 @@ public class FileViewController implements Serializable {
             String tmpdir = "tmp/";
             FileSpecActor fsa = new FileSpecActor();
             fsa.createDir(tmpdir);
-            tmpName = tmpdir + pns.utils.RStrings.rndString(3, 'a', 'z') + "_" + fmCurr.getFileName();
+            tmpName = tmpdir + pns.utils.strings.RStrings.rndString(3, 'a', 'z') + "_" + fmCurr.getFileName();
             fsa.setFullFileName(tmpName);
             //System.out.println("  fsa.getFullFileName() " + fsa.getFullFileName());
             fsa.fileWrite(fmCurr.getContent());
@@ -205,7 +198,8 @@ public class FileViewController implements Serializable {
             String tmpFName = rroot + "/";
             FileMeasured tmpf = it.next();
 
-            if (!emA.contains(tmpf)) {
+            //   if (!emA.contains(tmpf)) {
+            if (true) {
 
                 String fileMonth = tmpf.getMonth() + "";
                 if (tmpf.getMonth() < 10) {
@@ -215,20 +209,20 @@ public class FileViewController implements Serializable {
                 if (tmpf.getDate() < 10) {
                     fileDate = "0" + tmpf.getDate();
                 }
-                tmpFName += tmpf.getYear() + "/" + fileMonth + "-" + fileDate + "/" + tmpf.getFileName();
-                System.out.println("=======> Operation No " + k);
-
-                System.out.println(" Working with file " + tmpFName);
-                System.out.println(" File content size " + (1 + tmpf.getContent().length() / 1024) + " kB ");
-                System.out.println("  ************  ");
-                System.out.println("  IN DB   " + emA.contains(tmpf));
-                System.out.println("  ************  ");
+//                tmpFName += tmpf.getYear() + "/" + fileMonth + "-" + fileDate + "/" + tmpf.getFileName();
+//                System.out.println("=======> Operation No " + k);
+//
+//                System.out.println(" Working with file " + tmpFName);
+//                System.out.println(" File content size " + (1 + tmpf.getContent().length() / 1024) + " kB ");
+//                System.out.println("  ************  ");
+//                System.out.println("  IN DB   " + emA.contains(tmpf));
+//                System.out.println("  ************  ");
 
                 try {
-                    System.out.println("--------------------- Creating Archiv / Step 3: Adding file to Archive ---------------" + new Date());
-                    emA.getTransaction().begin();
-                    emA.persist(tmpf);
-                    emA.getTransaction().commit();
+//                    System.out.println("--------------------- Creating Archiv / Step 3: Adding file to Archive ---------------" + new Date());
+//                    emA.getTransaction().begin();
+//                    emA.persist(tmpf);
+//                    emA.getTransaction().commit();
                     k++;
                 } catch (PersistenceException e) {
                     System.out.println(new Date() + "  The record with hash " + tmpf.getIntHash() + "  already exists. This operation have been crashed.   ");

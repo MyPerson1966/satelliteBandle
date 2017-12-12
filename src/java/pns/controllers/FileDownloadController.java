@@ -8,7 +8,7 @@ import java.io.InputStream;
 import javax.faces.bean.ManagedBean;
 import javax.faces.context.FacesContext;
 import javax.servlet.http.HttpServletResponse;
-import pns.kiam.entities.satellites.FileMeasured;
+import pns.entity.FileMeasured;
 
 @Named
 @RequestScoped
