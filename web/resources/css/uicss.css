@@ -132,3 +132,8 @@
     color: #00fdfd !important;
     
 }
+.ui-datatable-odd, .ui-datatable-even{
+    padding-left: 15px;
+    border-bottom: #004343;
+    border-bottom-width: 2px;
+}
