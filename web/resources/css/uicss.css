@@ -106,4 +106,29 @@
     box-shadow: 0 0px 5px rgba(0,110,110,0.7)  !important;
     color: #004343 !important;
 }
-
+.ui-widget-content .ui-datatable-even{
+    padding-left:5px   !important;
+    background: #00f5f5 !important;
+    box-shadow: -5px 5px 10px rgba(0,220,220,0.9)  !important;
+    color: #224343 !important;
+}
+.ui-widget-content .ui-datatable-odd{
+    padding-left:5px   !important;
+    background: #00d5d5 !important;
+    box-shadow: -5px 5px 10px rgba(0,220,220,0.9)  !important;
+    color: #224343 !important;
+    
+}
+.ui-widget-content .ui-datatable-even:hover{
+    padding-left:5px   !important;
+    background: #008787 !important;
+    box-shadow: -5px 5px 10px rgba(0,150,150,0.9)  !important;
+    color: #00fdfd !important;
+}
+.ui-widget-content .ui-datatable-odd:hover{
+    padding-left:5px   !important;
+    background: #008787 !important;
+    box-shadow: -5px 5px 10px rgba(0,150,150,0.9)  !important;
+    color: #00fdfd !important;
+    
+}
