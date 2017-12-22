@@ -28,24 +28,7 @@
         </c:if>
         
         <c:if test="#{userController.currantSessionUser != null}">
-            <div style=" padding-bottom: -5px; height: 120px;" class="rtmenu">
-            <div style="float: left; padding-top: 30px;">
-                <a href="http://www.keldysh.ru/" target="_blank">
-                    <p:graphicImage library="images" name="LogoIPM.jpg" width="100" />
-                </a>
-            </div>
-            <div style="float: right;">
-                <a href="http://astronomer.ru/" target="_blank">
-                    <p:graphicImage library="images" name="ISON_logo_best_edition.jpg" width="100" />
-                </a>
-            </div>
-                
-                <div style=" text-align: center; padding-top: 40px;">
-                    <p:outputLabel style=" font-size: 22px; color: #006699; font-weight: bolder;" value="#{lng.TitleName}" />
-                    <br />
-                    <p:outputLabel style=" font-size: 22px; color: #006699; font-weight: bolder;"  value="#{lng.TitleName0}" />
-                </div>
-            </div>
+            <ui:include src="/pageTitle.xhtml" />
         </c:if>
         <table width="100%">
                     <c:if test="#{userController.currantSessionUser != null}"> 
